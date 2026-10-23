@@ -1,0 +1,32 @@
+# Build (CMake + Ninja)
+build/
+build-*/
+compile_commands.json
+
+# Objetos y binarios sueltos (compilaciones a mano)
+*.o
+*.a
+*.so
+*.exe
+*.out
+*.wasm
+hola
+
+# Tests, cobertura y sanitizers
+Testing/
+*.gcda
+*.gcno
+*.gcov
+coverage/
+vgcore.*
+
+# Guardados y logs generados al jugar
+*.sav
+game.log*
+
+# Editores y sistema operativo
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
