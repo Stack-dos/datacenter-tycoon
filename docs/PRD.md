@@ -2,28 +2,12 @@
 
 ## 1. Descripción general del producto
 
-### 1.1 Planteamiento del problema
-
-| # | Problema | Impacto (técnico/aprendizaje) | Línea base actual |
-|---|----------|-------------------------------|-------------------|
-| 1 | Falta práctica sostenida de C puro en un proyecto de tamaño real (lógica, arquitectura, manejo de memoria) | Las habilidades de C quedan en ejercicios aislados, sin decisiones de arquitectura ni ownership de memoria a escala | 0 proyectos completos en C |
-| 2 | El portfolio no muestra un producto terminado y distribuible de punta a punta | No hay evidencia pública de build multiplataforma, CI/CD ni releases | 0 releases publicados, 0 pipelines de CI |
-| 3 | No hay experiencia aplicada en separar lógica de presentación en C (core sin dependencias gráficas, testeable) | Código acoplado a la librería gráfica, difícil de testear y portar | 0% del core cubierto por tests |
-| 4 | Falta experiencia compilando el mismo código a escritorio y web (WebAssembly) | El proyecto quedaría limitado a una sola plataforma | 0 builds web |
-
-**Síntesis:** el proyecto existe para cerrar la brecha entre "saber C" y "haber entregado un
-producto en C": un juego completo, con arquitectura en capas, core testeado con sanitizers,
-y distribuido automáticamente en Windows, Linux y web.
-
 ### 1.2 Visión del producto
 
-Datacenter Tycoon es un juego idle/tycoon 2D donde el jugador arranca con un servidor viejo y
-escala hacia racks, clusters y datacenters completos. Es **principalmente un proyecto personal
-de aprendizaje y portfolio**: el juego tiene que ser divertido y pulido, pero el objetivo de
-fondo es practicar C (lógica, arquitectura, memoria) con estándares profesionales de calidad y
-distribución.
+Datacenter Tycoon es un juego idle/tycoon 2D donde el jugador arranca con un servidor viejo y escala hacia racks, clusters y datacenters completos. Es **principalmente un proyecto personal de aprendizaje y portfolio**: el juego tiene que ser divertido y pulido, pero el objetivo de fondo es practicar C (lógica, arquitectura, memoria) con estándares profesionales de calidad y distribución.
 
 **Pilares:**
+
 - **Core en C puro, testeable y aislado:** el modelo nunca depende de raylib.
 - **Data-driven:** generadores y upgrades definidos en JSON, balance sin recompilar.
 - **Distribución automatizada:** cada tag genera ejecutables, instalador y versión web.
@@ -32,6 +16,7 @@ distribución.
 ### 1.3 Metas y no metas
 
 **En el alcance (v1.0):**
+
 - Clic manual para atender requests (además de la PC inicial).
 - Generadores que producen recursos por segundo.
 - Logros y pantalla de estadísticas de la partida.
@@ -46,32 +31,30 @@ distribución.
 - Builds: Windows (ejecutable + instalador), Linux (AppImage), web (WebAssembly).
 - CI/CD con GitHub Actions (`ci.yml`, `release.yml`, `pages.yml`).
 
-El contenido se libera de forma incremental en versiones 0.x (ver 2.4): v1.0 es el juego base
-"completo y pulido" con las etapas 1 a 6 de la progresión.
+El contenido se libera de forma incremental en versiones 0.x (ver 2.4): v1.0 es el juego base "completo y pulido" con las etapas 1 a 6 de la progresión.
 
 **Fuera de alcance (v1.0):**
+
 - Prestigio / nuevos datacenters (etapa 7) — va en v1.x.
 - Recursos adicionales como monedas (ancho de banda, etc.) — v1.x.
 - Audio y música.
-- Telemetría o métricas de jugadores enviadas a un servidor: requiere backend, consentimiento y
-  política de privacidad; no aporta al objetivo de aprendizaje de v1.0.
-- Cualquier código C++ (panel de debug con Dear ImGui, ECS, pathfinding A*, mapa tycoon
-  visual) — se hace después de la v1.0, ver Roadmap futuro.
+- Telemetría o métricas de jugadores enviadas a un servidor: requiere backend, consentimiento y política de privacidad; no aporta al objetivo de aprendizaje de v1.0.
+- Cualquier código C++ (panel de debug con Dear ImGui, ECS, pathfinding A\*, mapa tycoon visual) — se hace después de la v1.0, ver Roadmap futuro.
 - Wrapping de headers en `extern "C"` — se agrega al final, sin tocar lógica.
 - Go u otros lenguajes — descartado explícitamente.
 - macOS — no está entre las plataformas objetivo.
 
 ### 1.4 Métricas de éxito
 
-| Métrica | Definición / cómo se mide | Objetivo |
-|---------|---------------------------|----------|
-| **North Star: v1.0 publicada** | Release `v1.0.0` en GitHub Releases con binarios Windows + Linux y versión web jugable | 1 release completo |
-| Cobertura de tests del core | Porcentaje de líneas de `src/core/` cubiertas por CTest | ≥ 80% |
-| Sanitizers limpios | Errores de ASan/UBSan en la suite de tests en CI | 0 |
-| Leaks | Bytes perdidos reportados por Valgrind en los tests | 0 |
-| Warnings del core | Warnings con `-Wall -Wextra -Wpedantic -Werror` | 0 (el build falla si hay) |
-| CI verde | Porcentaje de pushes a `main` con `ci.yml` en verde | 100% |
-| Paridad de plataformas | Plataformas donde el build del release funciona | 3/3 (Windows, Linux, web) |
+| Métrica                        | Definición / cómo se mide                                                              | Objetivo                  |
+| ------------------------------ | -------------------------------------------------------------------------------------- | ------------------------- |
+| **North Star: v1.0 publicada** | Release `v1.0.0` en GitHub Releases con binarios Windows + Linux y versión web jugable | 1 release completo        |
+| Cobertura de tests del core    | Porcentaje de líneas de `src/core/` cubiertas por CTest                                | ≥ 80%                     |
+| Sanitizers limpios             | Errores de ASan/UBSan en la suite de tests en CI                                       | 0                         |
+| Leaks                          | Bytes perdidos reportados por Valgrind en los tests                                    | 0                         |
+| Warnings del core              | Warnings con `-Wall -Wextra -Wpedantic -Werror`                                        | 0 (el build falla si hay) |
+| CI verde                       | Porcentaje de pushes a `main` con `ci.yml` en verde                                    | 100%                      |
+| Paridad de plataformas         | Plataformas donde el build del release funciona                                        | 3/3 (Windows, Linux, web) |
 
 ---
 
@@ -79,73 +62,64 @@ El contenido se libera de forma incremental en versiones 0.x (ver 2.4): v1.0 es 
 
 ### 2.1 Recurso central
 
-- **Capacidad (req/s):** cada servidor aguanta una cantidad de requests por segundo. Es el
-  "poder de cómputo" del jugador y lo que se muestra como producción principal.
-- **Dinero ($):** se gana por cada request atendida: `dinero/s = req/s × tarifa_por_request`.
-  Es lo que se gasta en comprar y mejorar.
-- Recursos adicionales (energía, temperatura, ancho de banda) se suman en versiones
-  posteriores como **restricciones**, no como monedas nuevas (ver 2.4).
+- **Capacidad (req/s):** cada servidor aguanta una cantidad de requests por segundo. Es el "poder de cómputo" del jugador y lo que se muestra como producción principal.
+- **Dinero ($):** se gana por cada request atendida: `dinero/s = req/s × tarifa_por_request`. Es lo que se gasta en comprar y mejorar.
+- Recursos adicionales (energía, temperatura, ancho de banda) se suman en versiones posteriores como **restricciones**, no como monedas nuevas (ver 2.4).
 
 ### 2.2 Secuencia de progresión propuesta
 
-| Etapa | Qué se desbloquea | Mecánica nueva | Condición de desbloqueo |
-|-------|-------------------|----------------|-------------------------|
-| 1. Garage | PC de escritorio vieja (arranca con 1) + clic manual | Atender requests a mano y comprar más PCs (costo exponencial) | Inicio del juego |
-| 2. Primer rack | Rack 42U + servidores Gen 1 de dos marcas ficticias | Los servidores ocupan **slots** de rack: hay que comprar racks para poder sumar servidores | Alcanzar X req/s totales |
-| 3. Sala de servidores | Ampliación de la sala (más espacio para racks) | Límite de racks por sala, ampliable | Tener N racks llenos |
-| 4. Infraestructura | Generadores eléctricos, aire acondicionado, sistema contra incendio | Cada servidor consume **kW** y genera **calor**; si se supera la capacidad, la producción cae | Primera ampliación de sala |
-| 5. Generaciones | Gen 2, Gen 3, … de cada marca | Servidores más modernos: más req/s por slot y por kW | Investigación/compra con dinero acumulado |
-| 6. Cluster | Clusterización de racks | No se compra directamente: es un **upgrade** que da bonus multiplicador a racks agrupados (ej. cada 4 racks llenos = 1 cluster con ×1.5) | Tener N racks de la misma generación |
-| 7. Datacenter | Nuevo datacenter (otra sede) | Mecánica de **prestigio**: se reinicia el progreso a cambio de un multiplicador permanente | Alcanzar un umbral alto de dinero total |
+| Etapa                 | Qué se desbloquea                                                   | Mecánica nueva                                                                                                                           | Condición de desbloqueo                   |
+| --------------------- | ------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
+| 1. Garage             | PC de escritorio vieja (arranca con 1) + clic manual                | Atender requests a mano y comprar más PCs (costo exponencial)                                                                            | Inicio del juego                          |
+| 2. Primer rack        | Rack 42U + servidores Gen 1 de dos marcas ficticias                 | Los servidores ocupan **slots** de rack: hay que comprar racks para poder sumar servidores                                               | Alcanzar X req/s totales                  |
+| 3. Sala de servidores | Ampliación de la sala (más espacio para racks)                      | Límite de racks por sala, ampliable                                                                                                      | Tener N racks llenos                      |
+| 4. Infraestructura    | Generadores eléctricos, aire acondicionado, sistema contra incendio | Cada servidor consume **kW** y genera **calor**; si se supera la capacidad, la producción cae                                            | Primera ampliación de sala                |
+| 5. Generaciones       | Gen 2, Gen 3, … de cada marca                                       | Servidores más modernos: más req/s por slot y por kW                                                                                     | Investigación/compra con dinero acumulado |
+| 6. Cluster            | Clusterización de racks                                             | No se compra directamente: es un **upgrade** que da bonus multiplicador a racks agrupados (ej. cada 4 racks llenos = 1 cluster con ×1.5) | Tener N racks de la misma generación      |
+| 7. Datacenter         | Nuevo datacenter (otra sede)                                        | Mecánica de **prestigio**: se reinicia el progreso a cambio de un multiplicador permanente                                               | Alcanzar un umbral alto de dinero total   |
 
-**Marcas ficticias (placeholders, nombres a definir):** "Dellmar" (balanceada) y "Hewpack"
-(más cara, más eficiente en energía). Ambas con generaciones Gen 1 → Gen N.
+**Marcas ficticias (placeholders, nombres a definir):** "Dellmar" (balanceada) y "Hewpack" (más cara, más eficiente en energía). Ambas con generaciones Gen 1 → Gen N.
 
 ### 2.3 Upgrades
 
 Dos tipos, ambos temáticos:
 
-| Tipo | Ejemplos | Efecto |
-|------|----------|--------|
-| **Por generador** | SSD en lugar de HDD (PC), más RAM (Gen 1), fuentes redundantes | ×2 a la producción de ese generador |
-| **Globales** | Balanceador de carga, virtualización, caché/CDN, monitoreo | ×1.25 a ×2 a toda la producción |
-| **Por infraestructura** (v0.4+) | Pasillo frío/caliente, UPS eficiente | Reduce consumo de kW o calor |
+| Tipo                            | Ejemplos                                                       | Efecto                              |
+| ------------------------------- | -------------------------------------------------------------- | ----------------------------------- |
+| **Por generador**               | SSD en lugar de HDD (PC), más RAM (Gen 1), fuentes redundantes | ×2 a la producción de ese generador |
+| **Globales**                    | Balanceador de carga, virtualización, caché/CDN, monitoreo     | ×1.25 a ×2 a toda la producción     |
+| **Por infraestructura** (v0.4+) | Pasillo frío/caliente, UPS eficiente                           | Reduce consumo de kW o calor        |
 
 ### 2.4 Liberación incremental
 
 Cada versión agrega una etapa de la tabla 2.2, así siempre hay un juego jugable y publicado:
 
-| Versión | Contenido |
-|---------|-----------|
-| v0.0.1 | Preparación: repo, build, tests, CI y un ejecutable mínimo (ventana vacía). Sin juego |
-| v0.1 | Etapa 1: clic manual, PCs + upgrades por generador. Loop de juego base, sin guardado. Canal: ejecutable Windows (`.zip`) y Linux (AppImage) |
-| v0.2 | Guardado, autoguardado y progreso offline. Canal nuevo: versión web en GitHub Pages |
-| v0.3 | Etapa 2: racks, slots, servidores Gen 1 de las dos marcas |
-| v0.4 | Etapas 3 y 4: ampliación de sala + energía, refrigeración e incendio |
-| v0.5 | Etapa 5: generaciones nuevas + upgrades globales |
-| v0.6 | Etapa 6: clusters + logros y estadísticas de la partida |
-| v1.0 | Pulido, balance, instaladores y versión web estables |
-| v1.x | Etapa 7: prestigio / nuevos datacenters |
-| v2.x | Extensiones C++ (ver Roadmap futuro) |
+| Versión | Contenido                                                                                                                                   |
+| ------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| v0.0.1  | Preparación: repo, build, tests, CI y un ejecutable mínimo (ventana vacía). Sin juego                                                       |
+| v0.1    | Etapa 1: clic manual, PCs + upgrades por generador. Loop de juego base, sin guardado. Canal: ejecutable Windows (`.zip`) y Linux (AppImage) |
+| v0.2    | Guardado, autoguardado y progreso offline. Canal nuevo: versión web en GitHub Pages                                                         |
+| v0.3    | Etapa 2: racks, slots, servidores Gen 1 de las dos marcas                                                                                   |
+| v0.4    | Etapas 3 y 4: ampliación de sala + energía, refrigeración e incendio                                                                        |
+| v0.5    | Etapa 5: generaciones nuevas + upgrades globales                                                                                            |
+| v0.6    | Etapa 6: clusters + logros y estadísticas de la partida                                                                                     |
+| v1.0    | Pulido, balance, instaladores y versión web estables                                                                                        |
+| v1.x    | Etapa 7: prestigio / nuevos datacenters                                                                                                     |
+| v2.x    | Extensiones C++ (ver Roadmap futuro)                                                                                                        |
 
-> Los canales de distribución también se suman de a uno: ejecutables en v0.1, web en v0.2 e
-> instalador de Windows en v1.0 (itch.io queda para v1.x). La v1.0 marca el juego base
-> "completo y pulido".
+> Los canales de distribución también se suman de a uno: ejecutables en v0.1, web en v0.2 e instalador de Windows en v1.0 (itch.io queda para v1.x). La v1.0 marca el juego base "completo y pulido".
 
 ---
 
 ## 3. Perfiles de usuario
 
-| Perfil | Rol y contexto | Objetivo principal | Problema actual |
-|--------|----------------|--------------------|-----------------|
-| **Jugador de idle games** (principal) | Juega Cookie Clicker, Adventure Capitalist o similares en pestañas abiertas o en ratos libres | Ver números crecer, desbloquear cosas nuevas y volver después a cobrar el progreso offline | Los idle games suelen tener temáticas genéricas (galletitas, negocios) |
-| **Público técnico** (secundario) | Sysadmins, devs o estudiantes de IT que conocen racks, generaciones de servidores y refrigeración | Disfrutar referencias reales del mundo datacenter | No hay idle games con temática de infraestructura realista |
-| **Reclutador / revisor de portfolio** | Mira el repo y la versión web | Evaluar calidad de código, arquitectura y CI/CD | Necesita ver un producto terminado y jugable en segundos |
+| Perfil                                | Rol y contexto                                                                                    | Objetivo principal                                                                         | Problema actual                                                        |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------- |
+| **Jugador de idle games** (principal) | Juega Cookie Clicker, Adventure Capitalist o similares en pestañas abiertas o en ratos libres     | Ver números crecer, desbloquear cosas nuevas y volver después a cobrar el progreso offline | Los idle games suelen tener temáticas genéricas (galletitas, negocios) |
+| **Público técnico** (secundario)      | Sysadmins, devs o estudiantes de IT que conocen racks, generaciones de servidores y refrigeración | Disfrutar referencias reales del mundo datacenter                                          | No hay idle games con temática de infraestructura realista             |
+| **Reclutador / revisor de portfolio** | Mira el repo y la versión web                                                                     | Evaluar calidad de código, arquitectura y CI/CD                                            | Necesita ver un producto terminado y jugable en segundos               |
 
-**Perfil ampliado — jugador idle:** abre la versión web en itch.io o GitHub Pages, juega
-10-15 minutos comprando servidores y upgrades, cierra la pestaña y vuelve horas después.
-Espera que el progreso offline esté calculado, que los números sean legibles (1.2K, 3.4M) y
-que siempre haya un próximo desbloqueo a la vista.
+**Perfil ampliado — jugador idle:** abre la versión web en itch.io o GitHub Pages, juega 10-15 minutos comprando servidores y upgrades, cierra la pestaña y vuelve horas después. Espera que el progreso offline esté calculado, que los números sean legibles (1.2K, 3.4M) y que siempre haya un próximo desbloqueo a la vista.
 
 ---
 
@@ -153,32 +127,23 @@ que siempre haya un próximo desbloqueo a la vista.
 
 ### 4.1 Entidades principales
 
-- **GameConfig** (JSON, solo lectura): valores globales de balance: dinero inicial, tarifa por
-  request, tope offline, % de reembolso de venta, parámetros de cluster.
-- **GeneratorDef** (JSON, solo lectura): id, nombre, categoría (`pc`/`server`/`rack`), marca,
-  generación, costo base, crecimiento, req/s, slots que ocupa (servidores), slots que provee
-  (racks), kW, calor, condición de desbloqueo.
+- **GameConfig** (JSON, solo lectura): valores globales de balance: dinero inicial, tarifa por request, tope offline, % de reembolso de venta, parámetros de cluster.
+- **GeneratorDef** (JSON, solo lectura): id, nombre, categoría (`pc`/`server`/`rack`), marca, generación, costo base, crecimiento, req/s, slots que ocupa (servidores), slots que provee (racks), kW, calor, condición de desbloqueo.
 - **GeneratorState** (guardado): id de generador, cantidad comprada.
-- **UpgradeDef** (JSON): id, nombre, tipo (`generator`/`click`/`global`/`infra`/`research`/`cluster`),
-  objetivo, multiplicador, costo, condición de desbloqueo.
+- **UpgradeDef** (JSON): id, nombre, tipo (`generator`/`click`/`global`/`infra`/`research`/`cluster`), objetivo, multiplicador, costo, condición de desbloqueo.
 - **UpgradeState** (guardado): id, comprado sí/no.
-- **InfraDef / InfraState** (v0.4+): sala, energía, refrigeración e incendio, cada uno con
-  niveles (costo, capacidad, requisitos) y el nivel actual. Los racks **no** son infraestructura:
-  son generadores de categoría `rack`.
+- **InfraDef / InfraState** (v0.4+): sala, energía, refrigeración e incendio, cada uno con niveles (costo, capacidad, requisitos) y el nivel actual. Los racks **no** son infraestructura: son generadores de categoría `rack`.
 - **UnlockCondition**: tipo (req/s totales, dinero total, cantidad de X, investigación) + umbral.
 - **GameState**: dinero, dinero total histórico, desbloqueos, más las colecciones de estados.
 - **SaveFile**: serialización JSON de GameState con campos `version` y `saved_at`.
 - **AchievementDef** (JSON, v0.6+): id, nombre, descripción, condición (reusa UnlockCondition).
 - **AchievementState** (guardado): ids de logros obtenidos con su timestamp.
-- **Stats** (guardado, v0.6+): tiempo jugado, clics totales, compras totales, récord de req/s,
-  dinero offline cobrado, fecha de inicio de la partida.
-- **Settings** (v1.0, archivo aparte del guardado): escala de UI, tips vistos. No es parte del
-  core.
+- **Stats** (guardado, v0.6+): tiempo jugado, clics totales, compras totales, récord de req/s, dinero offline cobrado, fecha de inicio de la partida.
+- **Settings** (v1.0, archivo aparte del guardado): escala de UI, tips vistos. No es parte del core.
 
 ### 4.2 Reglas de integridad
 
-- Todo `id` de estado debe existir en las definiciones cargadas; si un guardado trae un id
-  desconocido se descarta con log, sin romper la carga.
+- Todo `id` de estado debe existir en las definiciones cargadas; si un guardado trae un id desconocido se descarta con log, sin romper la carga.
 - `cantidad ≥ 0`, `dinero ≥ 0`; una compra sin dinero suficiente no modifica el estado.
 - Servidores comprados ≤ slots disponibles (v0.3+); racks ≤ capacidad de la sala (v0.4+).
 - Un guardado con `version` mayor a la soportada no se carga; con versión menor se migra.
@@ -212,18 +177,17 @@ erDiagram
 
 ### 5.1 Capas y responsabilidades
 
-| Capa | Carpeta | Responsabilidad | Puede incluir |
-|------|---------|-----------------|---------------|
-| **core** (Model) | `src/core/`, `include/core/` | Estado del juego, generadores, upgrades, economía, progreso offline, guardado (serialización), formateo de números | Solo C estándar + cJSON. **Nunca raylib** |
-| **ui/view** (View) | `src/ui/view/` | Dibuja el estado; lo lee sin modificarlo (`const GameState *`) | core, raylib, raygui |
-| **ui/input** (Controller) | `src/ui/input/` | Lee mouse/teclado y genera **acciones** (`ACTION_BUY_GENERATOR` + id) | core, raylib |
-| **platform** | `src/platform/` | Lo que cambia entre web y escritorio: escritura de guardado (archivo vs IndexedDB), timestamps | C estándar, Emscripten |
-| **app** | `src/main.c` | Game loop: input → `game_apply()` → `game_update()` (fixed timestep) → draw | Todo lo anterior |
+| Capa                      | Carpeta                      | Responsabilidad                                                                                                    | Puede incluir                             |
+| ------------------------- | ---------------------------- | ------------------------------------------------------------------------------------------------------------------ | ----------------------------------------- |
+| **core** (Model)          | `src/core/`, `include/core/` | Estado del juego, generadores, upgrades, economía, progreso offline, guardado (serialización), formateo de números | Solo C estándar + cJSON. **Nunca raylib** |
+| **ui/view** (View)        | `src/ui/view/`               | Dibuja el estado; lo lee sin modificarlo (`const GameState *`)                                                     | core, raylib, raygui                      |
+| **ui/input** (Controller) | `src/ui/input/`              | Lee mouse/teclado y genera **acciones** (`ACTION_BUY_GENERATOR` + id)                                              | core, raylib                              |
+| **platform**              | `src/platform/`              | Lo que cambia entre web y escritorio: escritura de guardado (archivo vs IndexedDB), timestamps                     | C estándar, Emscripten                    |
+| **app**                   | `src/main.c`                 | Game loop: input → `game_apply()` → `game_update()` (fixed timestep) → draw                                        | Todo lo anterior                          |
 
 ### 5.2 Regla de dependencias
 
-Un solo sentido: `app → ui → core`. `core` no conoce ni a `ui` ni a `platform`; recibe los
-bytes del guardado y el tiempo actual como parámetros.
+Un solo sentido: `app → ui → core`. `core` no conoce ni a `ui` ni a `platform`; recibe los bytes del guardado y el tiempo actual como parámetros.
 
 ```mermaid
 flowchart TD
@@ -238,42 +202,11 @@ flowchart TD
 
 ### 5.3 Patrones usados
 
-- **Acciones (Command):** toda modificación del estado pasa por `game_apply(GameState *, Action)`.
-  La UI nunca escribe el estado directamente → el core se testea sin ventana.
-- **Structs opacos:** `GameState` se declara en el header y se define en el `.c`; se accede con
-  funciones `game_*`.
+- **Acciones (Command):** toda modificación del estado pasa por `game_apply(GameState *, Action)`. La UI nunca escribe el estado directamente → el core se testea sin ventana.
+- **Structs opacos:** `GameState` se declara en el header y se define en el `.c`; se accede con funciones `game_*`.
 - **Pares create/destroy:** `game_create()` / `game_destroy()`, ownership documentado en el header.
 - **Data-driven:** definiciones en `data/*.json`, cargadas al inicio con cJSON.
-- **Fixed timestep:** acumulador de tiempo; la simulación avanza en pasos fijos (ej. 1/60 s)
-  independientes de los FPS.
-
-### 5.4 Estructura de directorios de referencia
-
-```
-include/core/     game.h, defs.h, upgrade.h, economy.h, save.h, numfmt.h, log.h, ...
-include/ui/       view.h, input.h
-include/platform/ fs.h, save_io.h, time.h
-src/core/         implementación del core (librería estática)
-src/ui/view/      dibujo con raylib/raygui
-src/ui/input/     mouse/teclado → acciones
-src/platform/     save_io_desktop.c, save_io_web.c, time.c
-src/main.c        game loop (#ifdef __EMSCRIPTEN__ para el loop web)
-tests/unit/       un archivo de test por módulo del core
-tests/integration/ escenarios completos (comprar, avanzar tiempo, guardar, cargar)
-tests/fixtures/   JSON de prueba (defs y guardados viejos)
-data/             config.json, generators.json, upgrades.json (infra.json desde v0.4)
-tools/            ejecutables auxiliares que solo linkean el core (benchmark, simulador)
-```
-
-(El árbol completo con instalador, scripts y workflows está en la sección 14.)
-
-### 5.5 Qué va en cada capa (guía práctica)
-
-- ¿Calcula, decide o modifica números del juego? → **core**.
-- ¿Llama a una función `Draw*` o `Gui*`? → **ui/view**.
-- ¿Lee `IsMouseButtonPressed`/`IsKeyPressed`? → **ui/input**, y devuelve una `Action`.
-- ¿Tiene un `#ifdef __EMSCRIPTEN__` o toca el sistema de archivos? → **platform** (o `main.c`).
-- Si dudás si algo va en core: si se puede testear sin abrir una ventana, va en core.
+- **Fixed timestep:** acumulador de tiempo; la simulación avanza en pasos fijos (ej. 1/60 s) independientes de los FPS.
 
 ---
 
@@ -284,12 +217,8 @@ Proyecto en equipo dentro de **stack-dos**, desarrollado en tiempo libre.
 ### 6.1 Principios de desarrollo
 
 - **Tests junto con cada historia:** ninguna historia que toque `core/` se cierra sin sus tests.
-  **TDD recomendado (no obligatorio)** para funciones puras del core (costos, formateo, progreso
-  offline): primero se escribe el test que falla, después el código mínimo que lo hace pasar.
-- **Git flow:** `main` (solo releases taggeados), `develop` (integración), `feature/US-xxx-nombre`,
-  `release/vX.Y.Z`, `hotfix/vX.Y.Z`.
-- **Code review obligatorio:** todo merge a `develop` va por PR con al menos 1 aprobación de otro
-  miembro del equipo y CI en verde.
+- **Git flow:** `main` (solo releases taggeados), `develop` (integración), `feature/US-xxx-nombre`, `release/vX.Y.Z`, `hotfix/vX.Y.Z`.
+- **Code review obligatorio:** todo merge a `develop` va por PR con al menos 1 aprobación de otro miembro del equipo y CI en verde.
 - **Un PR = una historia de usuario** (o una parte acotada de una historia XL).
 
 ### 6.2 Calidad de código y pruebas
@@ -300,69 +229,45 @@ Proyecto en equipo dentro de **stack-dos**, desarrollado en tiempo libre.
 - Cobertura objetivo del core ≥ 80% (ver 1.4). La UI no se testea automáticamente.
 - Formato con `clang-format` (archivo compartido en el repo) para evitar discusiones de estilo.
 
-### 6.3 Gestión de tareas
-
-**Escala de esfuerzo** (adaptada a horas de tiempo libre en vez de días completos):
-- **S:** hasta 4 h · **M:** 4-10 h · **L:** 10-20 h · **XL:** más de 20 h (partir en historias
-  más chicas).
-
-**Escala de prioridad:** Urgente (bloqueante) · Alta · Media · Baja.
-
-Las historias se toman en orden de prioridad dentro del hito actual; no se empieza un hito nuevo
-hasta liberar la versión del anterior.
-
 ---
 
 ## 7. Reglas de negocio consolidadas
 
-1. **Costo de compra:** `costo(n) = costo_base × crecimiento^n`, donde `n` es la cantidad ya
-   comprada de ese generador. Crecimiento por defecto: 1.15 (definible por generador en JSON).
-2. **Compra atómica:** si el dinero no alcanza, la acción no modifica nada. Si alcanza, se
-   descuenta el costo y se suma la unidad en el mismo paso.
-3. **Producción:** `req/s = Σ (cantidad × req_s_base × multiplicadores del generador) ×
-   multiplicadores globales`. Los multiplicadores se combinan **multiplicando** (×2 y ×2 = ×4).
+1. **Costo de compra:** `costo(n) = costo_base × crecimiento^n`, donde `n` es la cantidad ya comprada de ese generador. Crecimiento por defecto: 1.15 (definible por generador en JSON).
+2. **Compra atómica:** si el dinero no alcanza, la acción no modifica nada. Si alcanza, se descuenta el costo y se suma la unidad en el mismo paso.
+3. **Producción:** `req/s = Σ (cantidad × req_s_base × multiplicadores del generador) × multiplicadores globales`. Los multiplicadores se combinan **multiplicando** (×2 y ×2 = ×4).
 4. **Ingreso:** `dinero/s = req/s × tarifa_por_request × factor_infra`.
-5. **Factor de infraestructura (v0.4+):** si la demanda de kW o de refrigeración supera la
-   capacidad, `factor_infra = min(capacidad_kW / demanda_kW, capacidad_frío / calor)`; si no, 1.
-6. **Desbloqueos permanentes:** una vez cumplida una condición de desbloqueo, el ítem queda
-   disponible aunque después el valor baje.
+5. **Factor de infraestructura (v0.4+):** si la demanda de kW o de refrigeración supera la capacidad, `factor_infra = min(capacidad_kW / demanda_kW, capacidad_frío / calor)`; si no, 1.
+6. **Desbloqueos permanentes:** una vez cumplida una condición de desbloqueo, el ítem queda disponible aunque después el valor baje.
 7. **Upgrades de compra única:** cada upgrade se compra una sola vez.
-8. **Progreso offline:** `dinero_offline = segundos_ausente × dinero/s` al momento del guardado,
-   con **tope de 8 horas** (propuesto, ajustable en balance). Si el reloj del sistema va hacia
-   atrás, el tiempo ausente cuenta como 0.
+8. **Progreso offline:** `dinero_offline = segundos_ausente × dinero/s` al momento del guardado, con **tope de 8 horas** (propuesto, ajustable en balance). Si el reloj del sistema va hacia atrás, el tiempo ausente cuenta como 0.
 9. **Autoguardado:** cada 30 s, al cerrar la ventana y al ocultar la pestaña (web).
-10. **Formateo de números:** < 1.000 se muestra entero; hasta 10^15 con sufijos K, M, B, T, Qa
-    y un decimal (1.2K, 3.4M); desde ahí notación científica (5.0e20).
-11. **Venta (v0.5+):** vender una unidad devuelve `0.5 × costo(n − 1)` (porcentaje configurable en
-    JSON) y no reduce el dinero total histórico.
-12. **Clusters (v0.6+):** con la investigación "Clusterización", cada `cluster_slots` slots
-    ocupados por servidores de la misma generación forman un cluster; la producción de esa
-    generación se multiplica por `1 + cluster_bonus × clusters`.
-13. **Clic manual:** cada clic suma `tarifa × (click_base + click_pct × req/s) × multiplicadores de
-    clic`. Máximo 20 clics por segundo; los clics no cuentan para el progreso offline.
-14. **Logros (v0.6+):** se desbloquean una sola vez con las mismas condiciones que los
-    desbloqueos (regla 6) y son solo reconocimiento: no dan bonus de producción en v1.0.
+10. **Formateo de números:** < 1.000 se muestra entero; hasta 10^15 con sufijos K, M, B, T, Qa y un decimal (1.2K, 3.4M); desde ahí notación científica (5.0e20).
+11. **Venta (v0.5+):** vender una unidad devuelve `0.5 × costo(n − 1)` (porcentaje configurable en JSON) y no reduce el dinero total histórico.
+12. **Clusters (v0.6+):** con la investigación "Clusterización", cada `cluster_slots` slots ocupados por servidores de la misma generación forman un cluster; la producción de esa generación se multiplica por `1 + cluster_bonus × clusters`.
+13. **Clic manual:** cada clic suma `tarifa × (click_base + click_pct × req/s) × multiplicadores de clic`. Máximo 20 clics por segundo; los clics no cuentan para el progreso offline.
+14. **Logros (v0.6+):** se desbloquean una sola vez con las mismas condiciones que los desbloqueos (regla 6) y son solo reconocimiento: no dan bonus de producción en v1.0.
 
 ---
 
 ## 8. Requisitos No Funcionales (NFR)
 
-| Categoría | Requisito | Objetivo |
-|-----------|-----------|----------|
-| Rendimiento | FPS en escritorio, PC de gama baja (iGPU, 4 GB RAM) | 60 FPS estables |
-| Rendimiento | FPS en web (Chrome/Firefox actuales) | ≥ 50 FPS |
-| Rendimiento | Tiempo de un `game_update()` con todo el contenido de v1.0 | < 1 ms |
-| Rendimiento | Tiempo de arranque hasta pantalla jugable | < 2 s escritorio, < 5 s web |
-| Tamaño | Descarga de la versión web (`.wasm` + `.js` + `.data`) | < 5 MB |
-| Tamaño | Instalador de Windows / AppImage | < 15 MB |
-| Precisión | Simulación determinista: mismo estado + mismo tiempo = mismo resultado | 100% en tests |
-| Precisión | Diferencia entre progreso offline y la misma cantidad de tiempo jugado online | < 0,1% |
-| Confiabilidad | Guardado corrupto o ilegible | Nunca crashea; se carga partida nueva y se conserva el archivo como `.bak` |
-| Confiabilidad | Compatibilidad de guardados entre versiones | Todo guardado desde v0.2 se puede cargar en versiones posteriores (migración) |
-| Memoria | Leaks en tests (Valgrind) / errores ASan-UBSan | 0 / 0 |
-| Portabilidad | Plataformas | Windows 10+ x64, Linux x64 (glibc 2.31+), navegadores con WebAssembly |
-| Usabilidad | Resolución mínima soportada | 1280×720, UI escalable |
-| Usabilidad | Juego completo con mouse; atajos de teclado opcionales | 100% de acciones con mouse |
+| Categoría     | Requisito                                                                     | Objetivo                                                                      |
+| ------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| Rendimiento   | FPS en escritorio, PC de gama baja (iGPU, 4 GB RAM)                           | 60 FPS estables                                                               |
+| Rendimiento   | FPS en web (Chrome/Firefox actuales)                                          | ≥ 50 FPS                                                                      |
+| Rendimiento   | Tiempo de un `game_update()` con todo el contenido de v1.0                    | < 1 ms                                                                        |
+| Rendimiento   | Tiempo de arranque hasta pantalla jugable                                     | < 2 s escritorio, < 5 s web                                                   |
+| Tamaño        | Descarga de la versión web (`.wasm` + `.js` + `.data`)                        | < 5 MB                                                                        |
+| Tamaño        | Instalador de Windows / AppImage                                              | < 15 MB                                                                       |
+| Precisión     | Simulación determinista: mismo estado + mismo tiempo = mismo resultado        | 100% en tests                                                                 |
+| Precisión     | Diferencia entre progreso offline y la misma cantidad de tiempo jugado online | < 0,1%                                                                        |
+| Confiabilidad | Guardado corrupto o ilegible                                                  | Nunca crashea; se carga partida nueva y se conserva el archivo como `.bak`    |
+| Confiabilidad | Compatibilidad de guardados entre versiones                                   | Todo guardado desde v0.2 se puede cargar en versiones posteriores (migración) |
+| Memoria       | Leaks en tests (Valgrind) / errores ASan-UBSan                                | 0 / 0                                                                         |
+| Portabilidad  | Plataformas                                                                   | Windows 10+ x64, Linux x64 (glibc 2.31+), navegadores con WebAssembly         |
+| Usabilidad    | Resolución mínima soportada                                                   | 1280×720, UI escalable                                                        |
+| Usabilidad    | Juego completo con mouse; atajos de teclado opcionales                        | 100% de acciones con mouse                                                    |
 
 ---
 
@@ -370,29 +275,29 @@ hasta liberar la versión del anterior.
 
 ### 9.1 Decisiones tomadas
 
-| ID | Título | Decisión | Estado |
-|----|--------|----------|--------|
-| ADR-001 | Lenguaje del juego base | C puro (C11); C++ solo para extensiones posteriores en `src/ext/`. Go descartado | Aceptada |
-| ADR-002 | Librería gráfica | raylib + raygui | Aceptada |
-| ADR-003 | Formato de datos y guardado | JSON con cJSON | Aceptada |
-| ADR-004 | Sistema de build | CMake con targets de escritorio, web (Emscripten) y tests | Aceptada |
-| ADR-005 | Arquitectura | Capas `app → ui → core`, core sin raylib, cambios al estado solo por acciones | Aceptada |
-| ADR-006 | Números grandes | `double` + formateo propio (sin librería de bignum) | Aceptada |
-| ADR-007 | Simulación | Fixed timestep, independiente de los FPS | Aceptada |
-| ADR-008 | CI/CD | GitHub Actions: `ci.yml`, `release.yml`, `pages.yml` | Aceptada |
-| ADR-009 | Builds de distribución | Windows con MinGW (compilación cruzada) + instalador; Linux con AppImage | Aceptada |
-| ADR-010 | Estrategia de ramas | Git flow (`main`, `develop`, `feature/*`, `release/*`, `hotfix/*`) | Aceptada |
-| ADR-011 | Recurso central | req/s como capacidad que se convierte en dinero; energía y calor como restricciones | Propuesta |
+| ID      | Título                      | Decisión                                                                            | Estado    |
+| ------- | --------------------------- | ----------------------------------------------------------------------------------- | --------- |
+| ADR-001 | Lenguaje del juego base     | C puro (C11); C++ solo para extensiones posteriores en `src/ext/`. Go descartado    | Aceptada  |
+| ADR-002 | Librería gráfica            | raylib + raygui                                                                     | Aceptada  |
+| ADR-003 | Formato de datos y guardado | JSON con cJSON                                                                      | Aceptada  |
+| ADR-004 | Sistema de build            | CMake con targets de escritorio, web (Emscripten) y tests                           | Aceptada  |
+| ADR-005 | Arquitectura                | Capas `app → ui → core`, core sin raylib, cambios al estado solo por acciones       | Aceptada  |
+| ADR-006 | Números grandes             | `double` + formateo propio (sin librería de bignum)                                 | Aceptada  |
+| ADR-007 | Simulación                  | Fixed timestep, independiente de los FPS                                            | Aceptada  |
+| ADR-008 | CI/CD                       | GitHub Actions: `ci.yml`, `release.yml`, `pages.yml`                                | Aceptada  |
+| ADR-009 | Builds de distribución      | Windows con MinGW (compilación cruzada) + instalador; Linux con AppImage            | Aceptada  |
+| ADR-010 | Estrategia de ramas         | Git flow (`main`, `develop`, `feature/*`, `release/*`, `hotfix/*`)                  | Aceptada  |
+| ADR-011 | Recurso central             | req/s como capacidad que se convierte en dinero; energía y calor como restricciones | Propuesta |
 
 ### 9.2 ADRs pendientes
 
-| ID | Decisión pendiente | Opciones | Bloquea |
-|----|--------------------|----------|---------|
-| ADR-P01 | Framework de tests | Unity (ThrowTheSwitch) vs macros propias — **supuesto: Unity** | Hito 1 (primer test) |
-| ADR-P02 | Hosting web | GitHub Pages, itch.io o ambos — **supuesto: GitHub Pages** (itch.io opcional después) | Hito 2 (US-210, `pages.yml`) |
-| ADR-P03 | Instalador Windows | Inno Setup vs NSIS | Hito de v1.0 (`release.yml` completo) |
-| ADR-P04 | Guardado web | IndexedDB (IDBFS de Emscripten) vs `localStorage` — **supuesto: IDBFS** (mismo código de archivo que escritorio) | Hito 2 (v0.2) |
-| ADR-P05 | Nombres de marcas ficticias | "Dellmar" / "Hewpack" u otros | Hito de v0.3 |
+| ID      | Decisión pendiente          | Opciones                                                                                                         | Bloquea                               |
+| ------- | --------------------------- | ---------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
+| ADR-P01 | Framework de tests          | Unity (ThrowTheSwitch) vs macros propias — **supuesto: Unity**                                                   | Hito 1 (primer test)                  |
+| ADR-P02 | Hosting web                 | GitHub Pages, itch.io o ambos — **supuesto: GitHub Pages** (itch.io opcional después)                            | Hito 2 (US-210, `pages.yml`)          |
+| ADR-P03 | Instalador Windows          | Inno Setup vs NSIS                                                                                               | Hito de v1.0 (`release.yml` completo) |
+| ADR-P04 | Guardado web                | IndexedDB (IDBFS de Emscripten) vs `localStorage` — **supuesto: IDBFS** (mismo código de archivo que escritorio) | Hito 2 (v0.2)                         |
+| ADR-P05 | Nombres de marcas ficticias | "Dellmar" / "Hewpack" u otros                                                                                    | Hito de v0.3                          |
 
 ---
 
@@ -400,30 +305,22 @@ hasta liberar la versión del anterior.
 
 ### Hito 1 — Garage: base del proyecto y loop jugable (v0.0.1 → v0.1)
 
-- **Objetivo del hito:** tener el repo, el build, los tests y la CI funcionando, y un primer
-  juego jugable (clic manual, comprar PCs y upgrades por generador) publicado como ejecutable
-  para Windows y Linux.
-- **Épicas:** 4 · **Historias:** 17 · **Esfuerzo total estimado:** ~104 h·persona (~52 h por
-  persona con 2 personas)
+- **Objetivo del hito:** tener el repo, el build, los tests y la CI funcionando, y un primer juego jugable (clic manual, comprar PCs y upgrades por generador) publicado como ejecutable para Windows y Linux.
+- **Épicas:** 4 · **Historias:** 17
 - **Dos fases con su propio tag** (se mantiene un solo hito para no renumerar las historias):
-  - **Fase 1.1 — Preparación (tag `v0.0.1`, ~40 h):** épica H1-E1. Repo, build, tests, CI,
-    logs y un ejecutable mínimo (ventana vacía) publicado por `release.yml`, para probar toda la
-    cadena de punta a punta antes de escribir lógica.
+  - **Fase 1.1 — Preparación (tag `v0.0.1`,):** épica H1-E1. Repo, build, tests, CI, logs y un ejecutable mínimo (ventana vacía) publicado por `release.yml`, para probar toda la cadena de punta a punta antes de escribir lógica.
   - **Fase 1.2 — Garage (tag `v0.1.0`, ~64 h):** épicas H1-E2 a H1-E4. El juego jugable.
-- **Supuesto de este hito:** framework de tests **Unity** (ADR-P01, recomendado por traer
-  asserts para `double` y runner simple). Si se decide otra cosa, solo cambia US-103.
+- **Supuesto de este hito:** framework de tests **Unity** (ADR-P01, recomendado por traer asserts para `double` y runner simple). Si se decide otra cosa, solo cambia US-103.
 
 #### Épica H1-E1: Infraestructura del proyecto (Fase 1.1 — Preparación)
 
 #### US-101 — Estructura de carpetas y build con CMake
 
-- **Esfuerzo:** M (8 h) · **Prioridad:** Urgente · **Dependencias:** —
+- **Prioridad:** Urgente
 - **Objetivo Funcional:** que cualquiera de los dos pueda clonar y compilar con un solo comando.
-- **Narrativa:** Como desarrollador, quiero una estructura y un build estándar, para empezar a
-  programar sin configurar nada a mano.
+- **Narrativa:** Como desarrollador, quiero una estructura y un build estándar, para empezar a programar sin configurar nada a mano.
 - **Detalle técnico:**
-  - `CMakeLists.txt` raíz con C11, opción `DCT_BUILD_TESTS` y targets `dct_core` (librería
-    estática) y `datacenter_tycoon` (ejecutable). Los tests se suman en US-103.
+  - `CMakeLists.txt` raíz con C11, opción `DCT_BUILD_TESTS` y targets `dct_core` (librería estática) y `datacenter_tycoon` (ejecutable). Los tests se suman en US-103.
   - `dct_core` con `-Wall -Wextra -Wpedantic -Werror`.
   - `.gitignore`, `.clang-format`, `README.md` con instrucciones de build.
   - Ramas `main` y `develop` creadas (ver ADR-010).
@@ -434,7 +331,8 @@ hasta liberar la versión del anterior.
 - **Entidades/Modelos implicados:** —
 - **Testing Mínimo:** el build de los dos targets en ambas plataformas (los tests llegan en US-103).
 - **Archivos a crear:**
-  ```
+
+  ```txt
   CMakeLists.txt
   .gitignore
   .clang-format
@@ -471,7 +369,7 @@ hasta liberar la versión del anterior.
   comando, para encontrar errores de memoria antes de mergear.
 - **Detalle técnico:**
   - `cmake/sanitizers.cmake` con opción `DCT_SANITIZE` (`-fsanitize=address,undefined
-    -fno-omit-frame-pointer`).
+-fno-omit-frame-pointer`).
   - Un ejecutable de test por módulo, registrado con `add_test`.
   - `scripts/valgrind.sh` corre la suite con `--leak-check=full --error-exitcode=1`.
 - **Criterios de Aceptación:**
@@ -869,7 +767,7 @@ flowchart LR
     `save_free()` (ownership documentado en `save.h`).
   - `save_deserialize(const char *json, const Defs *, GameState **out)`.
   - Formato: `{ "version": 1, "money", "money_total", "saved_at", "generators": {id: cantidad},
-    "upgrades": [ids] }`.
+"upgrades": [ids] }`.
   - `saved_at` lo recibe como parámetro y `save_saved_at()` lo devuelve al cargar (el core no lee
     el reloj).
 - **Criterios de Aceptación:**
@@ -1897,16 +1795,16 @@ flowchart LR
 
 ### Resumen de hitos
 
-| Hito | Versión | Historias | Esfuerzo (h·persona) |
-|------|---------|-----------|----------------------|
-| 1 — Garage (fase 1.1 preparación + fase 1.2 juego) | v0.0.1 → v0.1 | 17 | ~104 (40 + 64) |
-| 2 — Persistencia y web | v0.2 | 10 | ~60 |
-| 3 — Primer rack | v0.3 | 9 | ~50 |
-| 4 — Infraestructura | v0.4 | 8 | ~50 |
-| 5 — Generaciones | v0.5 | 7 | ~40 |
-| 6 — Clusters, logros y estadísticas | v0.6 | 9 | ~50 |
-| 7 — Pulido | v1.0 | 9 | ~54 |
-| **Total** | | **69** | **~408 (~204 por persona)** |
+| Hito                                               | Versión       | Historias | Esfuerzo (h·persona)        |
+| -------------------------------------------------- | ------------- | --------- | --------------------------- |
+| 1 — Garage (fase 1.1 preparación + fase 1.2 juego) | v0.0.1 → v0.1 | 17        | ~104 (40 + 64)              |
+| 2 — Persistencia y web                             | v0.2          | 10        | ~60                         |
+| 3 — Primer rack                                    | v0.3          | 9         | ~50                         |
+| 4 — Infraestructura                                | v0.4          | 8         | ~50                         |
+| 5 — Generaciones                                   | v0.5          | 7         | ~40                         |
+| 6 — Clusters, logros y estadísticas                | v0.6          | 9         | ~50                         |
+| 7 — Pulido                                         | v1.0          | 9         | ~54                         |
+| **Total**                                          |               | **69**    | **~408 (~204 por persona)** |
 
 ---
 
@@ -1930,12 +1828,12 @@ Una historia está terminada cuando:
 
 Tiempos pensados para un equipo de 2 personas en tiempo libre.
 
-| Nivel | Definición | Ejemplos | Respuesta esperada |
-|-------|------------|----------|--------------------|
-| **Crítico** | Pérdida de partida o el juego no abre | Guardado corrupto por un bug, crash al iniciar, release roto | Hotfix en ≤ 3 días |
-| **Alto** | Una mecánica central no funciona o da resultados incorrectos | Compra que descuenta mal, offline que da de más, leak en el loop | Próximo release, ≤ 2 semanas |
-| **Medio** | Funciona pero mal; hay alternativa | Botón mal alineado, número mal formateado, balance roto en una etapa | Se planifica en el hito actual o el siguiente |
-| **Bajo** | Detalle cosmético o mejora menor | Texto con typo, color poco legible | Backlog |
+| Nivel       | Definición                                                   | Ejemplos                                                             | Respuesta esperada                            |
+| ----------- | ------------------------------------------------------------ | -------------------------------------------------------------------- | --------------------------------------------- |
+| **Crítico** | Pérdida de partida o el juego no abre                        | Guardado corrupto por un bug, crash al iniciar, release roto         | Hotfix en ≤ 3 días                            |
+| **Alto**    | Una mecánica central no funciona o da resultados incorrectos | Compra que descuenta mal, offline que da de más, leak en el loop     | Próximo release, ≤ 2 semanas                  |
+| **Medio**   | Funciona pero mal; hay alternativa                           | Botón mal alineado, número mal formateado, balance roto en una etapa | Se planifica en el hito actual o el siguiente |
+| **Bajo**    | Detalle cosmético o mejora menor                             | Texto con typo, color poco legible                                   | Backlog                                       |
 
 Cada bug se registra como issue de GitHub con la etiqueta `severity:<nivel>`.
 
@@ -1977,9 +1875,13 @@ Eliminado. Cada entrada referencia su US o issue.
 
 ```markdown
 ## [0.3.0] - AAAA-MM-DD
+
 ### Agregado
+
 - Racks y slots para servidores (US-303).
+
 ### Corregido
+
 - El progreso offline no aplicaba upgrades (#42).
 ```
 
@@ -2059,17 +1961,16 @@ datacenter-tycoon/
 > **No es compromiso de entrega.** Son ideas para después de v1.0, en el orden en que tendrían
 > más sentido.
 
-| Versión | Idea | Origen (sección 1.3) |
-|---------|------|----------------------|
-| v1.1 | Prestigio: abrir un nuevo datacenter reiniciando a cambio de un multiplicador permanente | Prestigio (etapa 7) |
-| v1.2 | Recursos adicionales: ancho de banda / contratos de clientes con demanda de req/s | Recursos adicionales |
-| v1.x | Publicación en itch.io con butler | ADR-P02 (opcional) |
-| v1.x | Audio: efectos de compra, ambiente de datacenter | Audio |
-| v1.x | Eventos aleatorios (incendios, cortes de energía) mitigados por la infraestructura | Supuesto del Hito 4 |
-| v1.x | Telemetría opt-in (anónima) para medir dónde abandonan los jugadores | Telemetría |
-| v2.0 | Headers con `extern "C"` y primeras extensiones C++ en `src/ext/` | Código C++ |
-| v2.x | Panel de debug con Dear ImGui | Código C++ |
-| v2.x | Mapa tycoon visual del datacenter (racks en una grilla) con pathfinding A* para técnicos | Código C++ |
-| v2.x | ECS para entidades del mapa | Código C++ |
-| — | macOS | Fuera de alcance |
-
+| Versión | Idea                                                                                      | Origen (sección 1.3) |
+| ------- | ----------------------------------------------------------------------------------------- | -------------------- |
+| v1.1    | Prestigio: abrir un nuevo datacenter reiniciando a cambio de un multiplicador permanente  | Prestigio (etapa 7)  |
+| v1.2    | Recursos adicionales: ancho de banda / contratos de clientes con demanda de req/s         | Recursos adicionales |
+| v1.x    | Publicación en itch.io con butler                                                         | ADR-P02 (opcional)   |
+| v1.x    | Audio: efectos de compra, ambiente de datacenter                                          | Audio                |
+| v1.x    | Eventos aleatorios (incendios, cortes de energía) mitigados por la infraestructura        | Supuesto del Hito 4  |
+| v1.x    | Telemetría opt-in (anónima) para medir dónde abandonan los jugadores                      | Telemetría           |
+| v2.0    | Headers con `extern "C"` y primeras extensiones C++ en `src/ext/`                         | Código C++           |
+| v2.x    | Panel de debug con Dear ImGui                                                             | Código C++           |
+| v2.x    | Mapa tycoon visual del datacenter (racks en una grilla) con pathfinding A\* para técnicos | Código C++           |
+| v2.x    | ECS para entidades del mapa                                                               | Código C++           |
+| —       | macOS                                                                                     | Fuera de alcance     |
