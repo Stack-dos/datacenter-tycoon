@@ -18,6 +18,10 @@ add_library(raygui STATIC src/ui/raygui_impl.c)
 target_include_directories(raygui PUBLIC lib/raygui/src)
 target_link_libraries(raygui PUBLIC raylib)
 
+add_library(cjson STATIC lib/cjson/cJSON.c)
+target_include_directories(cjson PUBLIC lib/cjson)
+
+
 # Genera ejecutables a partir de codigo fuente
 add_executable(datacenter_tycoon src/main.c)
 
