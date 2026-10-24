@@ -1,4 +1,4 @@
-.PHONY: all run test dependencias configuracion compilacion clean
+.PHONY: all run dependencias configuracion compilacion clean
 
 all: compilacion
 
