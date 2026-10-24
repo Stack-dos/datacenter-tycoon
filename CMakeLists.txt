@@ -35,3 +35,12 @@ target_compile_options(datacenter_tycoon PRIVATE
 # Linkear Raylib
 target_link_libraries(datacenter_tycoon PRIVATE raylib)
 target_link_libraries(datacenter_tycoon PUBLIC raygui)
+
+# Tests (US-103): cmake -B build -DDCT_BUILD_TESTS=ON
+option(DCT_BUILD_TESTS "Compilar los tests" ON)
+option(DCT_SANITIZE "Compilar los tests con ASan + UBSan" OFF)
+
+if(DCT_BUILD_TESTS)
+    enable_testing()
+    add_subdirectory(tests)
+endif()
