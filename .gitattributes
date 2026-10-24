@@ -1,0 +1,6 @@
+# Forzar a que todos los archivos de texto usen LF al clonarse/descargarse
+* text=auto eol=lf
+
+# Asegurar explícitamente que los scripts y archivos de configuración usen LF
+Makefile text eol=lf
+CMakeLists.txt text eol=lf
