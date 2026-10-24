@@ -278,9 +278,9 @@ Proyecto en equipo dentro de **stack-dos**, desarrollado en tiempo libre.
 | ID      | Título                      | Decisión                                                                            | Estado    |
 | ------- | --------------------------- | ----------------------------------------------------------------------------------- | --------- |
 | ADR-001 | Lenguaje del juego base     | C puro (C11); C++ solo para extensiones posteriores en `src/ext/`. Go descartado    | Aceptada  |
-| ADR-002 | Librería gráfica            | raylib + raygui                                                                     | Aceptada  |
-| ADR-003 | Formato de datos y guardado | JSON con cJSON                                                                      | Aceptada  |
-| ADR-004 | Sistema de build            | CMake con targets de escritorio, web (Emscripten) y tests                           | Aceptada  |
+| ADR-002 | Librería gráfica            | raylib 6.2 + raygui 5.0                                                             | Aceptada  |
+| ADR-003 | Formato de datos y guardado | JSON con cJSON 1.7.18                                                               | Aceptada  |
+| ADR-004 | Sistema de build            | CMake (≥ 3.29) + Ninja, con un `Makefile` raíz como atajo; targets de escritorio, web (Emscripten) y tests | Aceptada  |
 | ADR-005 | Arquitectura                | Capas `app → ui → core`, core sin raylib, cambios al estado solo por acciones       | Aceptada  |
 | ADR-006 | Números grandes             | `double` + formateo propio (sin librería de bignum)                                 | Aceptada  |
 | ADR-007 | Simulación                  | Fixed timestep, independiente de los FPS                                            | Aceptada  |
@@ -288,6 +288,7 @@ Proyecto en equipo dentro de **stack-dos**, desarrollado en tiempo libre.
 | ADR-009 | Builds de distribución      | Windows con MinGW (compilación cruzada) + instalador; Linux con AppImage            | Aceptada  |
 | ADR-010 | Estrategia de ramas         | Git flow (`main`, `develop`, `feature/*`, `release/*`, `hotfix/*`)                  | Aceptada  |
 | ADR-011 | Recurso central             | req/s como capacidad que se convierte en dinero; energía y calor como restricciones | Propuesta |
+| ADR-012 | Entorno de desarrollo       | Linux o WSL (Ubuntu); finales de línea LF forzados con `.gitattributes`             | Aceptada  |
 
 ### 9.2 ADRs pendientes
 
@@ -322,7 +323,9 @@ Proyecto en equipo dentro de **stack-dos**, desarrollado en tiempo libre.
 - **Detalle técnico:**
   - `CMakeLists.txt` raíz con C11, opción `DCT_BUILD_TESTS` y targets `dct_core` (librería estática) y `datacenter_tycoon` (ejecutable). Los tests se suman en US-103.
   - `dct_core` con `-Wall -Wextra -Wpedantic -Werror`.
-  - `.gitignore`, `.clang-format`, `README.md` con instrucciones de build.
+  - Generador Ninja y `Makefile` raíz como fachada: `make dependencias`, `make` (configura
+    en Debug y compila), `make run`, `make clean`.
+  - `.gitignore`, `.gitattributes` (LF), `.clang-format`, `README.md` con instrucciones de build.
   - Ramas `main` y `develop` creadas (ver ADR-010).
 - **Criterios de Aceptación:**
   - AC1: `cmake -B build && cmake --build build` compila en Linux y Windows (MinGW) sin warnings.
@@ -348,8 +351,14 @@ Proyecto en equipo dentro de **stack-dos**, desarrollado en tiempo libre.
 - **Narrativa:** Como desarrollador, quiero las dependencias versionadas en el repo, para que el
   build sea reproducible.
 - **Detalle técnico:**
-  - Submódulos git en `external/` con tag fijo (raylib, raygui, cJSON, Unity).
-  - `add_subdirectory` en CMake; los warnings estrictos **no** se aplican a `external/`.
+  - Submódulos git en `lib/` con tag fijo: raylib `6.2`, raygui `5.0`, cJSON `v1.7.18`,
+    Unity `v2.6.0` (Unity se agrega en US-103).
+  - raylib con `add_subdirectory` (`BUILD_EXAMPLES=OFF`).
+  - raygui es header-only: target estático `raygui` compilado desde `src/ui/raygui_impl.c`
+    (único `.c` con `RAYGUI_IMPLEMENTATION`), linkea raylib como `PUBLIC`.
+  - cJSON: target estático `cjson` desde `lib/cjson/cJSON.c` (sin usar su CMakeLists).
+  - Los warnings estrictos son `PRIVATE` de nuestros targets y **no** se aplican a `lib/`.
+  - Paquetes de desarrollo de X11/OpenGL/ALSA/Wayland en `make dependencias`.
 - **Criterios de Aceptación:**
   - AC1: `git clone --recursive` + build funciona sin descargar nada más.
   - AC2: cada submódulo apunta a un tag de release, no a una rama.
@@ -357,7 +366,7 @@ Proyecto en equipo dentro de **stack-dos**, desarrollado en tiempo libre.
 - **Archivos a crear:**
   ```
   .gitmodules
-  external/raylib/  external/raygui/  external/cjson/  external/unity/
+  lib/raylib/  lib/raygui/  lib/cjson/  lib/unity/
   ```
 
 #### US-103 — Tests con CTest, Unity y sanitizers
@@ -1908,7 +1917,7 @@ datacenter-tycoon/
 │   └── toolchain-mingw.cmake
 ├── data/                   # generators.json, upgrades.json, infra.json (balance)
 ├── docs/                   # PRD.md, reportes de calidad
-├── external/               # submódulos: raylib, raygui, cjson, unity
+├── lib/                    # submódulos: raylib, raygui, cjson, unity
 ├── include/
 │   ├── core/               # API pública del core (structs opacos)
 │   ├── ui/                 # view.h, input.h

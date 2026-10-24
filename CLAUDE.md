@@ -15,9 +15,13 @@ de aprendizaje y portfolio.
   - Versión web jugable en GitHub Pages y/o itch.io.
 
 ## Stack propuesto
-- **raylib** (ventana, dibujo, input) + **raygui** (UI: botones, paneles).
-- **cJSON** para datos de balance y guardado.
-- **CMake** como sistema de build (targets: escritorio, web con Emscripten, tests).
+- **raylib 6.2** (ventana, dibujo, input) + **raygui 5.0** (UI: botones, paneles).
+- **cJSON 1.7.18** para datos de balance y guardado.
+- **Unity 2.6.0** para tests (se agrega en US-103).
+- Dependencias como submódulos git en `lib/`, fijados a tags.
+- **CMake (≥ 3.29) + Ninja** como sistema de build (targets: escritorio, web con Emscripten,
+  tests). `Makefile` raíz como atajo: `make dependencias`, `make`, `make run`, `make clean`.
+- Desarrollo en Linux o WSL (Ubuntu). Finales de línea LF (`.gitattributes`).
 - **Emscripten** para compilar a WebAssembly.
 - **GitHub Actions** para CI/CD.
 - Windows: compilación cruzada con MinGW + instalador (Inno Setup o NSIS).
@@ -39,7 +43,7 @@ Capas con dependencias en un solo sentido: `app → ui → core`.
 
 ## Estructura de carpetas
 include/{core,ui}/  src/{core,ui/view,ui/input,platform}/  tests/{unit,integration,fixtures}/
-data/ (JSON de generadores/upgrades)  assets/  external/ (raylib, raygui, cjson)
+data/ (JSON de generadores/upgrades)  assets/  lib/ (raylib, raygui, cjson)
 web/shell.html  cmake/ (toolchain MinGW, sanitizers)  scripts/  docs/  .github/workflows/
 
 ## Mecánicas base (v1.0)
