@@ -4,3 +4,6 @@
 [submodule "lib/raygui"]
 	path = lib/raygui
 	url = https://github.com/raysan5/raygui.git
+[submodule "lib/cjson"]
+	path = lib/cjson
+	url = https://github.com/DaveGamble/cJSON.git
