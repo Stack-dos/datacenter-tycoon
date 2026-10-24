@@ -30,3 +30,6 @@ game.log*
 *.swp
 .DS_Store
 Thumbs.db
+
+datacenter_save.txt
+research_notes/

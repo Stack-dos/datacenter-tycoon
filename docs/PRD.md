@@ -1802,19 +1802,6 @@ flowchart LR
 - **Testing Mínimo:** checklist manual completo de las tres plataformas.
 - **Archivos a crear:** — (solo actualiza `CHANGELOG.md`)
 
-### Resumen de hitos
-
-| Hito                                               | Versión       | Historias | Esfuerzo (h·persona)        |
-| -------------------------------------------------- | ------------- | --------- | --------------------------- |
-| 1 — Garage (fase 1.1 preparación + fase 1.2 juego) | v0.0.1 → v0.1 | 17        | ~104 (40 + 64)              |
-| 2 — Persistencia y web                             | v0.2          | 10        | ~60                         |
-| 3 — Primer rack                                    | v0.3          | 9         | ~50                         |
-| 4 — Infraestructura                                | v0.4          | 8         | ~50                         |
-| 5 — Generaciones                                   | v0.5          | 7         | ~40                         |
-| 6 — Clusters, logros y estadísticas                | v0.6          | 9         | ~50                         |
-| 7 — Pulido                                         | v1.0          | 9         | ~54                         |
-| **Total**                                          |               | **69**    | **~408 (~204 por persona)** |
-
 ---
 
 ## 11. Definición de "Hecho" (DoD)
@@ -1830,21 +1817,6 @@ Una historia está terminada cuando:
 - [ ] PR revisado y aprobado por el otro miembro del equipo, mergeado a `develop`.
 - [ ] Si cambia el formato de guardado: `SAVE_VERSION` incrementado, migración y fixture nuevos.
 - [ ] Si cambia algo visible: captura en el PR y entrada en la sección "Unreleased" del CHANGELOG.
-
----
-
-## 12. Catálogo técnico de criticidad
-
-Tiempos pensados para un equipo de 2 personas en tiempo libre.
-
-| Nivel       | Definición                                                   | Ejemplos                                                             | Respuesta esperada                            |
-| ----------- | ------------------------------------------------------------ | -------------------------------------------------------------------- | --------------------------------------------- |
-| **Crítico** | Pérdida de partida o el juego no abre                        | Guardado corrupto por un bug, crash al iniciar, release roto         | Hotfix en ≤ 3 días                            |
-| **Alto**    | Una mecánica central no funciona o da resultados incorrectos | Compra que descuenta mal, offline que da de más, leak en el loop     | Próximo release, ≤ 2 semanas                  |
-| **Medio**   | Funciona pero mal; hay alternativa                           | Botón mal alineado, número mal formateado, balance roto en una etapa | Se planifica en el hito actual o el siguiente |
-| **Bajo**    | Detalle cosmético o mejora menor                             | Texto con typo, color poco legible                                   | Backlog                                       |
-
-Cada bug se registra como issue de GitHub con la etiqueta `severity:<nivel>`.
 
 ---
 
@@ -1903,48 +1875,6 @@ Eliminado. Cada entrada referencia su US o issue.
 
 ---
 
-## 14. Estructura de repositorio final
-
-```
-datacenter-tycoon/
-├── .github/workflows/
-│   ├── ci.yml              # build + tests + sanitizers + Valgrind en cada push/PR
-│   ├── release.yml         # tag v*: binarios Windows/Linux + instalador → GitHub Releases
-│   └── pages.yml           # build web → GitHub Pages
-├── assets/                 # ícono, fuentes, estilo de raygui
-├── cmake/
-│   ├── sanitizers.cmake    # opción DCT_SANITIZE
-│   └── toolchain-mingw.cmake
-├── data/                   # generators.json, upgrades.json, infra.json (balance)
-├── docs/                   # PRD.md, reportes de calidad
-├── lib/                    # submódulos: raylib, raygui, cjson, unity
-├── include/
-│   ├── core/               # API pública del core (structs opacos)
-│   ├── ui/                 # view.h, input.h
-│   └── platform/           # fs.h, save_io.h, time.h
-├── installer/              # windows.iss, linux/*.desktop
-├── scripts/                # valgrind.sh, package_appimage.sh
-├── src/
-│   ├── core/               # lógica pura en C (librería estática dct_core)
-│   ├── ui/view/            # dibujo con raylib/raygui
-│   ├── ui/input/           # input → acciones
-│   ├── platform/           # escritorio vs web
-│   ├── ext/                # (v2.x) extensiones C++
-│   └── main.c              # game loop
-├── tests/
-│   ├── unit/               # un test por módulo del core
-│   ├── integration/        # sesiones completas, guardado en disco, contenido real
-│   └── fixtures/           # JSON de prueba
-├── tools/                  # balance_sim.c (balance), bench_update.c (rendimiento)
-├── web/shell.html          # página HTML del build web
-├── CHANGELOG.md
-├── CLAUDE.md
-├── CMakeLists.txt
-└── README.md
-```
-
----
-
 ## 15. Convenciones rápidas
 
 - **Idioma:** código (identificadores y comentarios) en inglés; documentación, issues y PRs en
@@ -1967,8 +1897,7 @@ datacenter-tycoon/
 
 ## 16. Roadmap futuro (fuera de alcance v1.0)
 
-> **No es compromiso de entrega.** Son ideas para después de v1.0, en el orden en que tendrían
-> más sentido.
+> **No es compromiso de entrega.** Son ideas para después de v1.0, en el orden en que tendrían más sentido.
 
 | Versión | Idea                                                                                      | Origen (sección 1.3) |
 | ------- | ----------------------------------------------------------------------------------------- | -------------------- |
