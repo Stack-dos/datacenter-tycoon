@@ -1,9 +1,10 @@
-# Datacenter Tycoon — Resumen del proyecto
+# Datacenter Tycoon (nombre de trabajo) — Resumen del proyecto
 
 ## Idea
-Juego idle/tycoon 2D donde el jugador construye y escala un datacenter: arranca con un
-servidor viejo y crece hacia racks, clusters y datacenters completos. Proyecto personal
-de aprendizaje y portfolio.
+Juego idle/tycoon 2D donde el jugador construye y escala un datacenter: arranca con una
+PC vieja y crece hacia racks, clusters y datacenters completos. Proyecto de equipo (dos
+personas, dentro de stack-dos) de aprendizaje y portfolio. Referencia de diseño: Revolution
+Idle. El plan completo está en `docs/PRD.md`.
 
 ## Decisiones tomadas
 - **Lenguaje base:** C puro. El juego base se hace completo y pulido en C antes de sumar
@@ -12,7 +13,13 @@ de aprendizaje y portfolio.
   ya terminada (no Go).
 - **Distribución con CI/CD:**
   - Ejecutable + instalador para Windows y Linux, publicados en GitHub Releases.
-  - Versión web jugable en GitHub Pages y/o itch.io.
+  - Versión web jugable en GitHub Pages **e** itch.io (desde v0.2).
+- **Modelo:** juego gratuito con donaciones opcionales (itch.io, Ko-fi). Sin anuncios en
+  v1.0; después, solo con recompensa en un portal web y en Android (v2.x). Escritorio nunca
+  lleva anuncios. **Steam descartado.**
+- **Idioma del juego:** español (textos en `data/strings_es.json`); otros idiomas en v1.x.
+- **Nombre:** "Datacenter Tycoon" ya existe; el definitivo se decide antes de v0.1 (ADR-P06,
+  candidato recomendado: Five Nines).
 
 ## Stack propuesto
 - **raylib 6.2** (ventana, dibujo, input) + **raygui 5.0** (UI: botones, paneles).
@@ -24,7 +31,7 @@ de aprendizaje y portfolio.
 - Desarrollo en Linux o WSL (Ubuntu). Finales de línea LF (`.gitattributes`).
 - **Emscripten** para compilar a WebAssembly.
 - **GitHub Actions** para CI/CD.
-- Windows: compilación cruzada con MinGW + instalador (Inno Setup o NSIS).
+- Windows: compilación cruzada con MinGW + instalador (Inno Setup, pendiente de confirmar).
 - Linux: AppImage.
 
 ## Arquitectura propuesta
@@ -47,17 +54,20 @@ data/ (JSON de generadores/upgrades)  assets/  lib/ (raylib, raygui, cjson)
 web/shell.html  cmake/ (toolchain MinGW, sanitizers)  scripts/  docs/  .github/workflows/
 
 ## Mecánicas base (v1.0)
-- Generadores (servidores, racks, etc.) que producen recursos por segundo.
-- Upgrades que multiplican la producción.
+- req/s como recurso central; PCs y servidores producen, los racks dan slots, la
+  infraestructura por niveles (sala, energía, frío, incendio) limita.
+- Upgrades que multiplican la producción; hitos de cantidad (×2 a 25, 50, 100…).
 - Costos exponenciales: `costo = base × crecimiento^cantidad`.
-- Generadores y upgrades definidos en JSON (data-driven).
-- Guardado con campo de versión y autoguardado periódico.
-- Progreso offline: `tiempo_ausente × producción`.
+- Contratos con SLA y slots que se desbloquean, eventos (picos e incidentes), logros con
+  bonus, prestigio "Nueva sede" con reputación y automatización.
+- Desbloqueo progresivo de sistemas y tutorial integrado.
+- Todo definido en JSON (data-driven).
+- Guardado versionado con backups, autoguardado y progreso offline (tope 12 h).
 - Números grandes con `double` y formateo (1.2K, 3.4M, 5e20).
+- Se libera de a una versión: v0.1 … v0.8 (feature freeze) → v1.0.
 
 ## Calidad
-- Tests unitarios e integración del core (framework Unity de ThrowTheSwitch o macros
-  propias), corridos con CTest.
+- Tests unitarios e integración del core (Unity de ThrowTheSwitch), corridos con CTest.
 - Sanitizers (ASan + UBSan) en los tests y en CI; Valgrind para revisar leaks.
 - Warnings estrictos en el core: `-Wall -Wextra -Wpedantic -Werror`.
 - Convenciones: prefijo por módulo (`game_`, `gen_`, `save_`), funciones `static` para lo
@@ -66,8 +76,9 @@ web/shell.html  cmake/ (toolchain MinGW, sanitizers)  scripts/  docs/  .github/w
 
 ## Workflows de CI/CD
 - `ci.yml`: build + tests + sanitizers en cada push/PR.
-- `release.yml`: con tag `v*`, builds Windows/Linux + instalador → GitHub Releases.
-- `pages.yml`: build web → GitHub Pages (y opcionalmente itch.io con butler).
+- `release.yml`: con tag `v*`, builds Windows/Linux + instalador → GitHub Releases e itch.io
+  (butler).
+- `pages.yml`: con tag `v*`, build web → GitHub Pages.
 
 ## Preparación para C++ (más adelante)
 - Headers envueltos en `extern "C"` (se agrega al final, sin tocar lógica).
@@ -76,6 +87,7 @@ web/shell.html  cmake/ (toolchain MinGW, sanitizers)  scripts/  docs/  .github/w
 - Ideas: panel de debug con Dear ImGui, ECS, pathfinding A*, mapa tycoon visual.
 
 ## Pendiente de definir
-- GitHub Pages, itch.io o ambos para la versión web.
-- Lista concreta de generadores, upgrades y recursos del datacenter.
-- Herramienta de instalador para Windows (Inno Setup vs NSIS).
+- Nombre definitivo del juego (antes de v0.1).
+- Nombres de las marcas ficticias (antes de v0.3).
+- Herramienta de instalador para Windows (Inno Setup vs NSIS, antes de v1.0).
+- Portal web con anuncios (después de v1.0).
